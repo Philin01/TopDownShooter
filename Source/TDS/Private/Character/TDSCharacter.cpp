@@ -163,7 +163,7 @@ void ATDSCharacter::ChangeMovementState()
 	}
 	else 
 	{
-		if (SprintRunEnable)
+		if (SprintRunEnable && IsForvardMove())
 		{
 			WalkEnable = false;
 			AimEnable = false;
@@ -189,4 +189,12 @@ void ATDSCharacter::ChangeMovementState()
 		}
 	}
 	CharacterUpdate();
+}
+
+bool ATDSCharacter::IsForvardMove()
+{
+	FVector fVector = GetActorForwardVector();
+	FVector lmVector = GetLastMovementInputVector();
+	GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, FString::Printf(TEXT("%f = FloatVariable"), FVector::DotProduct(fVector, lmVector)));
+	return FVector::DotProduct(fVector, lmVector) > 0.9f;
 }

@@ -68,6 +68,8 @@ public:
 	void CharacterUpdate();
 	UFUNCTION(BlueprintCallable)
 	void ChangeMovementState();
+	UFUNCTION(BlueprintCallable)
+	bool IsForvardMove();
 	
 };
 

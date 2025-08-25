@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
 #include "FuncLibrary/Types.h"
+#include "InteractableItems/WeaponDefault.h"
 #include "TDSCharacter.generated.h"
 
 UCLASS(Blueprintable)
@@ -25,7 +26,7 @@ public:
 	/** Returns CameraBoom subobject **/
 	FORCEINLINE class USpringArmComponent* GetCameraBoom() const { return CameraBoom; }
 	/** Returns CursorToWorld subobject **/
-	FORCEINLINE class UDecalComponent* GetCursorToWorld() { return CursorToWorld; }
+	//FORCEINLINE class UDecalComponent* GetCursorToWorld() { return CursorToWorld; }
 
 private:
 	/** Top down camera */
@@ -37,11 +38,24 @@ private:
 	class USpringArmComponent* CameraBoom;
 
 	/** A decal that projects to the cursor location. */
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
-	class UDecalComponent* CursorToWorld;
+	//UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
+	//class UDecalComponent* CursorToWorld;
+
+protected:
+
+	virtual void BeginPlay() override;
 
 public:
 
+	//Cursor
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Cursor")
+	UMaterialInterface* CursorMaterial = nullptr;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Cursor")
+	FVector CursorSize = FVector(20.f, 40.f, 40.f);
+
+	UDecalComponent* CurrentCursor = nullptr;
+
+	//Movement
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
 	EMovementState MovementState = EMovementState::Run_State;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
@@ -53,23 +67,51 @@ public:
 	bool WalkEnable = false;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
 	bool AimEnable = false;
+	UPROPERTY(BlueprintReadOnly, Category = "Movement")
+	float ResSpeed = MovementSpeedInfo.RunSpeed;
 
+	//Weapon
+	AWeaponDefault* CurrentWeapon = nullptr;
+
+	//for demo
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Demo")
+	TSubclassOf<AWeaponDefault> InitWeaponClass = nullptr;
+
+
+	//Inputs
 	UFUNCTION()
 	void InputAxisX(float Value);
 	UFUNCTION()
 	void InputAxisY(float Value);
+	UFUNCTION()
+	void InputAttackPressed();
+	UFUNCTION()
+	void InputAttackReleased();
 
 	float AxisX;
 	float AxisY;
 	//Tick func
+	UFUNCTION()
 	void MovementTick(float DeltaTime);
 
+
+	//Func
+	UFUNCTION(BlueprintCallable)
+	void AttackCharEvent(bool bIsFiring);
 	UFUNCTION(BlueprintCallable)
 	void CharacterUpdate();
 	UFUNCTION(BlueprintCallable)
 	void ChangeMovementState();
 	UFUNCTION(BlueprintCallable)
 	bool IsForvardMove();
+
+	UFUNCTION(BlueprintCallable)
+	AWeaponDefault* GetCurrentWeapon();
+	UFUNCTION(BlueprintCallable)
+	void InitWeapon();
+
+	UFUNCTION(BlueprintCallable)
+	UDecalComponent* GetCursorToWorld();
 	
 };
 

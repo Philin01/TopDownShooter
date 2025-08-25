@@ -1,6 +1,9 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
+#pragma once
+
 #include "Kismet/BlueprintFunctionLibrary.h"
+
 #include "Types.generated.h"
 
 UENUM(BlueprintType)
@@ -19,15 +22,40 @@ struct FCharacterSpeed
 	GENERATED_BODY()
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
-	float AimSpeed = 200.f;
+	float AimSpeed = 100.f;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
 	float WalkSpeed = 300.f;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
-	float AimWalkSpeed = 100.f;
+	float AimWalkSpeed = 50.f;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
-	float RunSpeed = 600.f;
+	float RunSpeed = 400.f;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
 	float SprintRunSpeed = 800.f;
+};
+
+USTRUCT(BlueprintType)
+struct FProjectileInfo
+{
+	GENERATED_BODY()
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ProjectileSetting")
+	TSubclassOf<class AProjectileDefault> Projectile = nullptr;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ProjectileSetting")
+	float ProjectileDamage = 20.f;
+
+};
+
+USTRUCT(BlueprintType)
+struct FWeaponInfo
+{
+	GENERATED_BODY()
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "WeaponSetting")
+	float WeaponDamage = 20.f;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "WeaponSetting")
+	float RateOfFire = 10.f;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "WeaponSetting")
+	FProjectileInfo ProjectileSettings;
 };
 
 UCLASS()

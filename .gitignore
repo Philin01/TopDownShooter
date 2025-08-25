@@ -12,3 +12,7 @@ Saved
 *.suo
 *.xcodeproj
 *.xcworkspace
+/Content/FPS_Weapon_Bundle
+/Content/MixedVFX
+/Content/Fx_Effects
+/Content/Environment
